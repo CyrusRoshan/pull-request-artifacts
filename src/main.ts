@@ -116,11 +116,10 @@ Commit: ${repo_url}/commit/${commit_sha}
 
       const basename = path.split('/').reverse()[0]
       const content = fs.readFileSync(path)
-
-      const target_name = `pr${context.issue.number}-${basename}`
-      await uploadFile(target_name, content)
+      await uploadFile(basename, content)
     }
   } catch (error) {
+    // @ts-ignore-error
     core.setFailed(error.message)
   }
 }
