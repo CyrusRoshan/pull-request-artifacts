@@ -80,8 +80,8 @@ function run() {
                 });
                 artifacts_branch = repo.data.default_branch;
             }
-            core.info(`Artifacts repo: ${artifacts_owner}/${artifacts_repo}`);
-            core.info(`Artifacts branch: ${artifacts_branch}`);
+            console.info(`Artifacts repo: ${artifacts_owner}/${artifacts_repo}`);
+            console.info(`Artifacts branch: ${artifacts_branch}`);
             const findFileSha = (filename) => __awaiter(this, void 0, void 0, function* () {
                 try {
                     const files = yield artifacts_octokit.rest.repos.getContent({
@@ -98,16 +98,18 @@ function run() {
                         }
                     }
                 }
-                catch (error) { }
+                catch (error) {
+                    console.error('Got error when getting hash:', error);
+                }
                 return undefined;
             });
             const uploadFile = (filename, filecontent) => __awaiter(this, void 0, void 0, function* () {
                 const old_sha = yield findFileSha(filename);
                 if (old_sha) {
-                    core.info(`Uploading file ${filename} (old sha ${old_sha})`);
+                    console.info(`Uploading file ${filename} (old sha ${old_sha})`);
                 }
                 else {
-                    core.info(`Uploading file ${filename} (first time)`);
+                    console.info(`Uploading file ${filename} (first time)`);
                 }
                 const file_path = artifacts_dir
                     ? `${artifacts_dir}/${filename}`

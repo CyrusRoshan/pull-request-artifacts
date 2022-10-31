@@ -46,8 +46,8 @@ async function run(): Promise<void> {
       artifacts_branch = repo.data.default_branch
     }
 
-    core.info(`Artifacts repo: ${artifacts_owner}/${artifacts_repo}`)
-    core.info(`Artifacts branch: ${artifacts_branch}`)
+    console.info(`Artifacts repo: ${artifacts_owner}/${artifacts_repo}`)
+    console.info(`Artifacts branch: ${artifacts_branch}`)
 
     const findFileSha = async (
       filename: string
@@ -67,7 +67,9 @@ async function run(): Promise<void> {
             }
           }
         }
-      } catch (error) {}
+      } catch (error) {
+        console.error('Got error when getting hash:', error)
+      }
 
       return undefined
     }
@@ -79,9 +81,9 @@ async function run(): Promise<void> {
       const old_sha = await findFileSha(filename)
 
       if (old_sha) {
-        core.info(`Uploading file ${filename} (old sha ${old_sha})`)
+        console.info(`Uploading file ${filename} (old sha ${old_sha})`)
       } else {
-        core.info(`Uploading file ${filename} (first time)`)
+        console.info(`Uploading file ${filename} (first time)`)
       }
 
       const file_path = artifacts_dir
